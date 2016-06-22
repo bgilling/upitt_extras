@@ -1,0 +1,40 @@
+<?php
+
+/**
+ * @file
+ * A simple editorial workflow for Islandora.
+ */
+
+/**
+ * Implements hook_menu().
+ */
+function upitt_extras_menu() {
+  $items = array();
+  $items['admin/islandora/tools/upitt_extras/settings'] = array(
+    'title' => 'University of Pittsburgh Extras',
+    'description' => 'Settings for various options within the University of Pittsburgh system and workflow.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('upitt_extras_admin_settings'),
+    'access arguments' => array('administer site'),
+    'file' => 'includes/admin.form.inc',
+  );
+  if (variable_get('upitt_extras_show_sitejump') == 1) {
+    $items['islandora/object/%islandora_object/sitejump'] = array(
+      'title' => 'Site Jump',
+      'page callback' => 'drupal_get_form',
+      'page arguments' => array('upitt_extras_sitejump', 2),
+      'type' => MENU_LOCAL_TASK,
+      'access arguments' => array('administer site'),        
+    );
+  }
+  return $items;
+}
+
+function upitt_extras_sitejump() {
+  if (variable_get('upitt_extras_show_sitejump') == 1) {
+    drupal_set_message('Redirecting to Gamera');
+    error_log('called upitt_extras_sitejump = '.variable_get('upitt_extras_show_sitejump'));
+    $path = str_replace(":", "%3A", current_path());
+    drupal_goto('http://gamera.library.pitt.edu/' . $path);
+  }
+}

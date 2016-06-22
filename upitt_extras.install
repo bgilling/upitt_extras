@@ -1,0 +1,10 @@
+<?php
+
+/**
+ * Implements hook_uninstall().
+ *
+ */
+function upitt_extras_uninstall() {
+  // Add new variables to clean up.
+  variable_del('upitt_extras_show_sitejump');
+} 
